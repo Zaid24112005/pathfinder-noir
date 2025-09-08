@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, BookOpen, Code, Database, Laptop, Bookmark, Info } from "lucide-react";
+import { Upload, BookOpen, Code, Database, Laptop, Bookmark, Info, Palette, Camera, Music, Gamepad2, Briefcase, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface FormData {
@@ -55,6 +55,54 @@ const StudentForm = () => {
       careerRelevance: "High demand across all industries for digital transformation.",
       learningTime: "12-16 weeks",
       benefits: ["HTML/CSS", "React", "Node.js", "Responsive design"]
+    },
+    {
+      name: "Graphic Design",
+      icon: Palette,
+      description: "Create stunning visual content for digital and print media using industry-standard tools.",
+      careerRelevance: "Essential for marketing, advertising, branding, and digital media industries.",
+      learningTime: "8-12 weeks",
+      benefits: ["Adobe Creative Suite", "Brand identity", "UI/UX design", "Visual communication"]
+    },
+    {
+      name: "Photography",
+      icon: Camera,
+      description: "Master the art of capturing compelling images for various professional purposes.",
+      careerRelevance: "Growing demand in social media, e-commerce, journalism, and creative industries.",
+      learningTime: "6-10 weeks",
+      benefits: ["Photo editing", "Composition", "Lighting", "Portfolio development"]
+    },
+    {
+      name: "Music Production",
+      icon: Music,
+      description: "Learn to create, record, and produce professional-quality music and audio content.",
+      careerRelevance: "Opportunities in entertainment, advertising, gaming, and content creation.",
+      learningTime: "10-16 weeks",
+      benefits: ["Digital audio workstations", "Sound design", "Mixing", "Audio engineering"]
+    },
+    {
+      name: "Game Development",
+      icon: Gamepad2,
+      description: "Build engaging games for mobile, web, and desktop platforms using modern engines.",
+      careerRelevance: "Rapidly growing gaming industry with diverse career opportunities.",
+      learningTime: "12-20 weeks",
+      benefits: ["Unity/Unreal Engine", "Game design", "Programming", "3D modeling"]
+    },
+    {
+      name: "Digital Marketing",
+      icon: Briefcase,
+      description: "Master online marketing strategies including SEO, social media, and content marketing.",
+      careerRelevance: "Critical skill for all businesses in the digital age with high job demand.",
+      learningTime: "8-12 weeks",
+      benefits: ["SEO/SEM", "Social media marketing", "Analytics", "Content strategy"]
+    },
+    {
+      name: "Foreign Languages",
+      icon: Globe,
+      description: "Learn popular languages like Spanish, French, German, or Japanese for global opportunities.",
+      careerRelevance: "Valuable in international business, tourism, translation, and diplomatic careers.",
+      learningTime: "16-24 weeks",
+      benefits: ["Cultural understanding", "Global communication", "Translation skills", "International opportunities"]
     },
   ];
 

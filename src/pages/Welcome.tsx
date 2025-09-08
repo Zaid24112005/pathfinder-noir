@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, Sparkles } from "lucide-react";
+import { ChevronRight, Sparkles, ArrowLeft } from "lucide-react";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -23,6 +23,17 @@ const Welcome = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+      {/* Back Button */}
+      <div className="absolute top-8 left-8">
+        <button
+          onClick={() => navigate("/about")}
+          className="btn-oval-secondary"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </button>
+      </div>
+
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 border border-foreground/20 rounded-full animate-pulse"></div>

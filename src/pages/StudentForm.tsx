@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, BookOpen, Code, Database, Laptop, Bookmark, Info, Palette, Camera, Music, Gamepad2, Briefcase, Globe } from "lucide-react";
+import { Upload, BookOpen, Code, Database, Laptop, Bookmark, Info, Palette, Camera, Music, Gamepad2, Briefcase, Globe, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface FormData {
@@ -197,6 +197,17 @@ const StudentForm = () => {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="max-w-2xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate("/")}
+            className="btn-oval-secondary"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold font-poppins mb-4">Tell Us About Yourself</h1>

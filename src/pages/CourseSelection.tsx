@@ -14,6 +14,11 @@ import {
   ChevronRight,
   ArrowLeft
 } from "lucide-react";
+import { indianStates, majorCities } from "@/data/locations";
+import { allColleges, getCollegesByDomain } from "@/data/colleges";
+import CollegeCard from "@/components/CollegeCard";
+import CollegeDetailModal from "@/components/CollegeDetailModal";
+import type { College } from "@/data/colleges";
 
 interface StudentData {
   fullName: string;
@@ -28,6 +33,8 @@ const CourseSelection = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filterLocation, setFilterLocation] = useState("");
   const [filterInterest, setFilterInterest] = useState("");
+  const [selectedCollege, setSelectedCollege] = useState<College | null>(null);
+  const [showColleges, setShowColleges] = useState(false);
 
   useEffect(() => {
     const data = localStorage.getItem("studentData");
@@ -74,7 +81,7 @@ const CourseSelection = () => {
           name: "Computer Science Engineering", 
           duration: "4 years", 
           careers: ["Software Engineer", "Data Scientist", "AI Specialist"],
-          colleges: ["IIT Delhi", "NIT Trichy", "BITS Pilani"],
+          colleges: getCollegesByDomain("Engineering").slice(0, 5).map(c => c.name),
           cutoff: "95%+",
           fees: "₹2-15 lakhs"
         },
@@ -82,7 +89,7 @@ const CourseSelection = () => {
           name: "Mechanical Engineering", 
           duration: "4 years", 
           careers: ["Design Engineer", "Project Manager", "Research Scientist"],
-          colleges: ["IIT Bombay", "NIT Surathkal", "VIT Vellore"],
+          colleges: getCollegesByDomain("Engineering").slice(5, 10).map(c => c.name),
           cutoff: "90%+",
           fees: "₹3-12 lakhs"
         },
@@ -90,7 +97,7 @@ const CourseSelection = () => {
           name: "Civil Engineering", 
           duration: "4 years", 
           careers: ["Site Engineer", "Urban Planner", "Structural Engineer"],
-          colleges: ["IIT Kharagpur", "NIT Warangal", "COEP Pune"],
+          colleges: getCollegesByDomain("Engineering").slice(2, 7).map(c => c.name),
           cutoff: "85%+",
           fees: "₹2-10 lakhs"
         },
@@ -106,7 +113,7 @@ const CourseSelection = () => {
           name: "Bachelor of Arts (B.A.)", 
           duration: "3 years", 
           careers: ["Civil Services", "Journalist", "Teacher"],
-          colleges: ["Delhi University", "JNU", "BHU"],
+          colleges: getCollegesByDomain("Arts").slice(0, 3).map(c => c.name),
           cutoff: "60%+",
           fees: "₹50k-3 lakhs"
         },
@@ -114,7 +121,7 @@ const CourseSelection = () => {
           name: "Bachelor of Science (B.Sc.)", 
           duration: "3 years", 
           careers: ["Research Scientist", "Lab Technician", "Further Studies"],
-          colleges: ["IISc Bangalore", "DU", "Mumbai University"],
+          colleges: getCollegesByDomain("Science").slice(0, 3).map(c => c.name),
           cutoff: "70%+",
           fees: "₹1-5 lakhs"
         },
@@ -122,7 +129,7 @@ const CourseSelection = () => {
           name: "Bachelor of Commerce (B.Com)", 
           duration: "3 years", 
           careers: ["Chartered Accountant", "Financial Analyst", "Banker"],
-          colleges: ["SRCC Delhi", "Christ University", "Loyola College"],
+          colleges: getCollegesByDomain("Commerce").slice(0, 3).map(c => c.name),
           cutoff: "85%+",
           fees: "₹2-8 lakhs"
         },
@@ -188,6 +195,15 @@ const CourseSelection = () => {
       <div className="mt-4 pt-4 border-t border-border">
         <button className="btn-oval-secondary w-full">
           View Details & Colleges
+        </button>
+        <button 
+          onClick={() => {
+            setSelectedCategory(category);
+            setShowColleges(true);
+          }}
+          className="btn-oval-primary w-full mt-2"
+        >
+          Browse Colleges
         </button>
       </div>
     </div>
@@ -281,9 +297,9 @@ const CourseSelection = () => {
                     className="bg-surface border border-border rounded-lg px-3 py-2 text-sm"
                   >
                     <option value="">All Locations</option>
-                    <option value="delhi">Delhi</option>
-                    <option value="mumbai">Mumbai</option>
-                    <option value="bangalore">Bangalore</option>
+                    {indianStates.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -298,15 +314,56 @@ const CourseSelection = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {getOptionsForLevel()
-                .find(opt => opt.id === selectedCategory)
-                ?.courses.map((course, idx) => (
-                  <CourseCard key={idx} course={course} category={selectedCategory} />
-                ))}
-            </div>
+            {!showColleges ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {getOptionsForLevel()
+                  .find(opt => opt.id === selectedCategory)
+                  ?.courses.map((course, idx) => (
+                    <CourseCard key={idx} course={course} category={selectedCategory} />
+                  ))}
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <button
+                    onClick={() => setShowColleges(false)}
+                    className="btn-oval-secondary"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Courses
+                  </button>
+                  <h3 className="text-xl font-semibold">Top Colleges</h3>
+                </div>
+                
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getCollegesByDomain(
+                    selectedCategory === "engineering" ? "Engineering" : 
+                    selectedCategory === "other-courses" ? "Arts" : "Engineering"
+                  )
+                  .filter(college => 
+                    !filterLocation || college.state === filterLocation
+                  )
+                  .slice(0, 12)
+                  .map((college) => (
+                    <CollegeCard
+                      key={college.id}
+                      college={college}
+                      onViewDetails={setSelectedCollege}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
+       
+       {/* College Detail Modal */}
+       {selectedCollege && (
+         <CollegeDetailModal
+           college={selectedCollege}
+           onClose={() => setSelectedCollege(null)}
+         />
+       )}
       </div>
     </div>
   );
